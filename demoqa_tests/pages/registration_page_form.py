@@ -1,4 +1,4 @@
-from selene import browser, have, command
+from selene import browser, have
 from path.resource import RESOURCES_PATH
 
 
@@ -6,10 +6,6 @@ class RegistrationPage:
 
     def open(self):
         browser.open('/automation-practice-form')
-        browser.all('#adplus-anchor').with_(timeout=3).wait_until(
-            have.size_greater_than_or_equal(1)
-        )
-        browser.all('#adplus-anchor').perform(command.js.remove)
 
 
     def type_first_name(self, f_name):
