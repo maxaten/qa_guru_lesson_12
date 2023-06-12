@@ -1,5 +1,8 @@
 import allure
+from selene import browser
+
 from demoqa_tests.pages.registration_page_form import RegistrationPage
+from utils import attach
 
 
 def test_form_demo():
@@ -49,3 +52,6 @@ def test_form_demo():
             'State and City Haryana Karnal'
         )
 
+    attach.add_html(browser)
+    attach.add_screenshot(browser)
+    attach.add_logs(browser)
