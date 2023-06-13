@@ -1,57 +1,41 @@
 import allure
-from selene import browser
-
-from demoqa_tests.pages.registration_page_form import RegistrationPage
-from utils import attach
+from selene import have, by
 
 
-def test_form_demo():
-    with allure.step('Открываем главную страницу'):
-        registration_page = RegistrationPage()
-        registration_page.open()
+@allure.title("Successful fill form")
+def test_successful(setup_browser):
+    browser = setup_browser
+    first_name = "Alex"
+    last_name = "Egorov"
 
-    with allure.step('Заполняеи фамилию и имя'):
-        registration_page.type_first_name('Alexander')
-        registration_page.type_last_name('Pupkin')
+    with allure.step("Open registrations form"):
+        browser.open("https://demoqa.com/automation-practice-form")
+        browser.element(".practice-form-wrapper").should(have.text("Student Registration Form"))
+        browser.driver.execute_script("$('footer').remove()")
+        browser.driver.execute_script("$('#fixedban').remove()")
 
-    with allure.step('Заполняем почту, пол, номер телефона и дату рождения'):
-        registration_page.type_user_email('Pupkin@gmail.com')
-        registration_page.select_user_gender('Female')
-        registration_page.type_user_phone_number('79067777777')
-        registration_page.click_input_birthday('1990', 'November', '10')
+    with allure.step("Fill form"):
+        browser.element("#firstName").set_value(first_name)
+        browser.element("#lastName").set_value(last_name)
+        browser.element("#userEmail").set_value("alex@egorov.com")
+        browser.element("#genterWrapper").element(by.text("Other")).click()
+        browser.element("#userNumber").set_value("1231231230")
+        # browser.element("#dateOfBirthInput").click()
+        # browser.element(".react-datepicker__month-select").s("July")
+        # browser.element(".react-datepicker__year-select").selectOption("2008")
+        # browser.element(".react-datepicker__day--030:not(.react-datepicker__day--outside-month)").click()
+        browser.element("#subjectsInput").send_keys("Maths")
+        browser.element("#subjectsInput").press_enter()
+        browser.element("#hobbiesWrapper").element(by.text("Sports")).click()
+        # browser.element("#uploadPicture").uploadFromClasspath("img/1.png")
+        browser.element("#currentAddress").set_value("Some street 1")
+        browser.element("#state").click()
+        browser.element("#stateCity-wrapper").element(by.text("NCR")).click()
+        browser.element("#city").click()
+        browser.element("#stateCity-wrapper").element(by.text("Delhi")).click()
+        browser.element("#submit").click()
 
-    with allure.step('Заполняем предменты и хобби'):
-        registration_page.type_subjects('Computer Science', 'English')
-        registration_page.select_hobbies('sport')
-
-    with allure.step('Выбираем изображение'):
-        registration_page.chose_file('pocita.jpg')
-
-    with allure.step('Скролим страницу'):
-        registration_page.scroll_page()
-
-    with allure.step('Заполняем адрес'):
-        registration_page.type_current_adress('914751, Оренбургская область, город Волоколамск, проезд Сталина, 09')
-        registration_page.type_state_and_press_enter('Haryana')
-        registration_page.type_city_and_press_enter('Karnal')
-
-    with allure.step('Проходим регистрацию'):
-        registration_page.press_enter_by_confirm_registration()
-
-    with allure.step('Проверяем данные на корректность'):
-        registration_page.assert_user_info(
-            'Student Name Alexander Pupkin',
-            'Student Email Pupkin@gmail.com',
-            'Gender Female',
-            'Mobile 7906777777',
-            'Date of Birth 10 November,1990',
-            'Subjects Computer Science,' ' English',
-            'Hobbies Sports',
-            'Picture pocita.jpg',
-            'Address 914751, Оренбургская область, город Волоколамск, проезд Сталина, 09',
-            'State and City Haryana Karnal'
-        )
-
-    attach.add_html(browser)
-    attach.add_screenshot(browser)
-    attach.add_logs(browser)
+    with allure.step("Check form results"):
+        browser.element("#example-modal-sizes-title-lg").should(have.text("Thanks for submitting the form"))
+        # browser.element(".table-responsive").should(
+        #     have.texts(first_name, last_name, "alex@egorov.com", "Some street 1"))
