@@ -1,10 +1,11 @@
 import pytest
 
+
 @pytest.mark.skip
 def test_skipped1():
-    assert False
+    pass
 
 
 @pytest.mark.skip
 def test_skipped2():
-    assert False
+    pass
