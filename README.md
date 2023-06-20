@@ -1,1 +1,1 @@
-![Отчет тестов](./images/chrome_e9PmjWjwt8.png)
+![Отчет тестов](./images/chrome_u0UfKuqDIh.png)
