@@ -1,1 +1,1 @@
-# qa_guru_lesson_12
+![Отчет тестов](./images/chrome_e9PmjWjwt8.png)
